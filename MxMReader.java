@@ -1,8 +1,7 @@
 package mxmreader;
 
 import java.io.*;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  *
@@ -24,7 +23,7 @@ public class MxMReader {
     public static void main(String[] args) throws IOException {
         Scanner s = null;
         PrintWriter out = null;
-		Token current = new Token("");
+	Token current = new Token("");
 		
         try {
             s = new Scanner 

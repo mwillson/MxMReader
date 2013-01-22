@@ -8,7 +8,7 @@ package mxmreader;
 public class Token {
     
     private String text = "";
-    public final String[] timbres = 
+    public String[] timbres = 
         {"PIANO", "BRIGHT_ACOUSTIC", "ELECTRIC_GRAND", "HONKEY_TONK", 
 	"ELECTRIC_PIANO1", "ELECTRIC_PIANO2", "HARPSICHORD", "CLAVINET",
 	"DRAWBAR_ORGAN", "PERCUSSIVE_ORGAN", "ROCK_ORGAN", "CHURCH_ORGAN",
