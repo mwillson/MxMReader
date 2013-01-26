@@ -1,4 +1,4 @@
-
+package mxmreader;
 
 import java.util.ArrayList;
 
@@ -6,15 +6,16 @@ import java.util.ArrayList;
  *
  * @author mwillson
  */
-public class Melody {
+public class Chord {
     
     private ArrayList<Note> notes;
     
-    public Melody (ArrayList<Note> n) {
+    public Chord (ArrayList n) {
         notes = n;
     }
     
     public ArrayList<Note> getNotes(){
         return notes;
     }
+    
 }

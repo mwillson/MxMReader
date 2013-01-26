@@ -25,9 +25,9 @@ we deem to be important to music.
 
 Example pitch encodings (where A is the base frequency of 440 hz):
 
-the note C# or Db => 000100000000
+the note C	  => 000100000000
 the note A        => 100000000000 
-the note F# or Gb => 000000001000 
+the note F# or Gb => 000000000100 
 
 
 ###Duration
@@ -60,7 +60,8 @@ Also a duration of .5 beats => 010000000000000100000000
 As there are a limited number of timbre options, this seems to be pretty much a free choice
 as to how to encode it. So as to not have a huge array with a bunch of 0's and one 1, this is
 going to be encoded in binary. My current count says there are exactly 128 possibilities, 
-which is awfully convenient, so, we represent this as an 7 bit array.
+which is awfully convenient, so, we represent this as an 7 bit array based on the location
+in the timbres array of our particular timbre.
 
 Examples:
 "cello"   = timbres(127) => 1111111

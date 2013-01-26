@@ -1,4 +1,4 @@
-package mxmreader;
+import java.lang.Math;
 
 /**
  *
@@ -71,62 +71,94 @@ public class Token {
 	return false;
     }
     
-	/*
-	 * returns true if it is a pitch raise or lower token
-	 */
+    /*
+     * returns true if it is a pitch raise or lower token
+     */
 	 
     public boolean pitchChange () {
         return ( text.equals("/") || text.equals("\\") ); 
     }
-	
-	/*
-	 * If the token represents a note, returns an int representing its
-	 * duration, otherwise returns 0.
-	 */
+
+    /*
+     * Returns a Timbre object based on the Token.
+     */
+    public Timbre parseTimbre () {
+        int timbrePos = 0;
+      	for(int i = 0; i < timbres.length; i++) {
+	  if(text.equals(timbres[i])) timbrePos = i;
+	}
+        return new Timbre(text, timbrePos);
+    }
+  
+    /*
+     * Returns a Note object based on the Token.
+     */
 	 
-	public Note parseNote () {
-          double noteDuration = 0.0;
-          String notePitch = "";
-	  int start = 0;
-	  String durString = null;
-	  char[] first, second;
-	    char[] ptext = text.toCharArray();
-		if((new Character(ptext[1])).equals('b') || 
-                   (new Character(ptext[1])).equals('#')) {
-			start = 2;
-		}else {
-			start = 1;
+    public Note parseNote () {
+
+        String notePitch = "";
+	int start = 0;
+        int noteDurationNum = 0;
+        int noteDurationDenom = 0;
+	String durString = null;
+
+	char[] first, second, pitchArray;
+	char[] ptext = text.toCharArray();
+
+        // find out where note info ends and duration info starts
+	if((new Character(ptext[1])).equals('b') || 
+           (new Character(ptext[1])).equals('#')) {
+		start = 2;
+	}else {
+		start = 1;
+	}
+	char[] durCharArray = new char[ptext.length - start];
+	for(int i = start; i < ptext.length; i++) {
+		durCharArray[i - start] = ptext[i];
+	}
+	durString = new String(durCharArray);
+	
+	//parse duration info
+	if( new Character(durCharArray[0]).equals('.') ) { //duration is a fraction
+		char[] numerArray = new char[durCharArray.length - 1];
+		for(int i = 1; i < durCharArray.length; i++) {
+			numerArray[i-1] = durCharArray[i];
 		}
-		char[] durCharArray = new char[ptext.length - start];
-		for(int i = start; i < ptext.length; i++) {
-			durCharArray[i - start] = ptext[i];
-		}
-		durString = new String(durCharArray);
-		//duration is a fraction
-		if(durString.split("/").length > 1) {
-			//divLoc - location of div sign
-			int divLoc = 0;
-			for(int i = 0; i < durCharArray.length; i++) {
-			  if((new Character(durCharArray[i])).equals('/')) {
-                              divLoc = i;
-                          } 
-			}
-			first = new char[divLoc+1];
-			second = new char[durCharArray.length - (divLoc + 1)];
-			for(int i = 0; i < divLoc; i++) {
-				first[i] = durCharArray[i];
-			}
-			for(int i = divLoc + 1; i < durCharArray.length; i++) {
-				second[i] = durCharArray[i];
-			}
-			noteDuration = Integer.parseInt(new String(first)) / 
-				   Integer.parseInt(new String(second));
-		}else {
-                    //duration is not a fraction
-                    noteDuration = Integer.parseInt(durString);
-                }
-                
-                return new Note(notePitch, noteDuration);
-	}//parseDuration
+		String tempnumer = new String(numerArray);
+                int tempnum = Integer.parseInt(tempnumer);
+		int gcd = greatestCommonDiv(tempnum, (int)Math.pow(10,numerArray.length));
+                noteDurationNum = tempnum / gcd;
+                noteDurationDenom = (int)Math.pow(10,numerArray.length) / gcd; 
+	}else { //duration is not a fraction
+            noteDurationNum = Integer.parseInt(durString);
+            noteDurationDenom = 1;
+        }
+
+        //parse pitch info
+        pitchArray = new char[start];
+        for(int i = 0; i < start; i++) {
+	    pitchArray[i] = ptext[i];
+        }
+        notePitch = new String(pitchArray);
+
+        //return the note we get using all those parsed values                
+        return new Note(notePitch, noteDurationNum, noteDurationDenom);
+
+    }//parseNote
+
+
+    /**
+     *  Return the greatest common divisor of two integers.
+     */
+
+    int greatestCommonDiv( int num, int den ) {
+        int div = 1;
+        for (int i = 1; i <= num; i++) {
+            if( ((num % i) == 0) && ((den % i) == 0) ) {
+                div = i;
+            }
+        }
+	return div;
+    }
 	
 }

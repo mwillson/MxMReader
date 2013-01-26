@@ -43,12 +43,8 @@ public class MxMReader {
 
             // the number of rows for the input matrices is the total 
             // number of "notes" played
-            // numRows = notes.size();
-            
-            // create a printwriter for some output file, specified or not
-            if(args.length > 0) out = new PrintWriter (new FileWriter(args[0]));
-            else out = new PrintWriter (new FileWriter("output.txt"));
-
+            numRows = notes.size();
+            out = new PrintWriter (new FileWriter(args[0]));
             //Write out note info to file
             out.write("_D: ");
             for(int i = 0; i < notes.size(); i++) {

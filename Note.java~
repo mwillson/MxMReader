@@ -83,9 +83,7 @@ public class Note {
      * return a usable matrix representation of the duration of the note
      */
 
-    public char[] durationMatrix () {
-      System.out.println("numerator: " + durnumerator);
-      System.out.println("denom: " + durdenominator);
+    public char[] durationMatrix () { 
       char[] m = new char[24];
       for(int i = 0; i < 12; i++) {
         if((i+1) == durnumerator) m[i] = '1';

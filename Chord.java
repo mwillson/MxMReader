@@ -1,4 +1,3 @@
-package mxmreader;
 
 import java.util.ArrayList;
 
